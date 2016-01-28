@@ -5,9 +5,7 @@ global Eslabon0 Eslabon1 Eslabon2;
 % teta2
 % teta3
 % disp('---')
-set(handles.text2,'string',teta1)
-set(handles.text3,'string',teta2)
-set(handles.text4,'string',teta3)    
+
 RotacionZ=[cosd(teta1) -sind(teta1) 0 0;
           sind(teta1)  cosd(teta1)  0 0;
           0            0            1 0;
@@ -32,9 +30,9 @@ TrasEslabon2=[1,0,0,0;
               0,1,0,0;
               0,0,0,7;
               0,0,0,1];          
-E0=RotacionZ*Eslabon0;
-E1=(RotacionZ*TrasEslabon0)*RotacionX*TrasEslabon1;
-E2=(RotacionZ*TrasEslabon0*RotacionX*TrasEslabon1)*RotacionXX*TrasEslabon2;
+E0=RotacionZ*Eslabon0
+E1=(RotacionZ*TrasEslabon0)*RotacionX*TrasEslabon1
+E2=(RotacionZ*TrasEslabon0*RotacionX*TrasEslabon1)*RotacionXX*TrasEslabon2
 
 hold off
 plot3(E0(1),E0(2),E0(3),'ro')
@@ -45,9 +43,9 @@ plot3(E2(1,4),E2(2,4),E2(3,4),'ro')
 hold on
 line([0 E0(1)],[0 E0(2)],[0 E0(3)],'color','black','LineWidth',20)
 hold on
-line([E0(1) E1(1,4)],[E0(2) E1(2,4)],[E0(3) E1(3,4)],'color','r','LineWidth',20)
+line([E0(1) E1(1)],[E0(2) E1(2)],[E0(3) E1(3)],'color','r','LineWidth',20)
 hold on
-line([E1(1,4) E2(1,4)],[E1(2,4) E2(2,4)],[E1(3,4) E2(3,4)],'color','black','LineWidth',10)
+line([E1(1,4) E2(1,4)],[E1(2) E2(2,4)],[E1(3) E2(3,4)],'color','black','LineWidth',20)
 grafo;
 % Cinematica Directa con Matrices
 CDM=E2(:,4);

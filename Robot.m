@@ -18,10 +18,11 @@ end
 function Robot_OpeningFcn(hObject, eventdata, handles, varargin)
 %% Principal
 handles.output = hObject;
-global Eslabon1 Eslabon2;
+global Eslabon0 Eslabon1 Eslabon2;
 global teta1 teta2 teta3;
+Eslabon0=[0;0;2;0];
 Eslabon1=[0;0;11;0];
-Eslabon2=[0;0;18;0];
+Eslabon2=[0;0;7;0];
 teta1=0; teta2=0; teta3=0;
 matrices;
 set(gcf,'toolbar','figure')
@@ -34,7 +35,6 @@ global teta1;
 teta1=teta1-5;
 if (teta1>=-180)
     matrices;
-    set(handles.text2,'string',teta1)
 else
     teta1=teta1+5;
 end
@@ -45,7 +45,6 @@ global teta1;
 teta1=teta1+5;
 if teta1<=180
 	matrices;
-    set(handles.text2,'string',teta1)
 else
     teta1=teta1-5;
 end
@@ -55,7 +54,6 @@ global teta2;
 teta2=teta2-5;
 if (teta2>=-90)
 	matrices;
-    set(handles.text3,'string',teta2)
 else
     teta2=teta2+5;
 end
@@ -66,7 +64,6 @@ global teta2;
 teta2=teta2+5;
 if (teta2<=90)
 	matrices;
-    set(handles.text3,'string',teta2)
 else
     teta2=teta2-5;
 end
@@ -77,7 +74,6 @@ global teta3;
 teta3=teta3-5;
 if (teta3>=-90)
     matrices;
-    set(handles.text4,'string',teta3)
 else
     teta3=teta3+5;
 end
@@ -88,7 +84,6 @@ global teta3;
 teta3=teta3+5;
 if teta3<=90
     matrices;
-    set(handles.text4,'string',teta3)
 else
     teta3=teta3-5;
 end
