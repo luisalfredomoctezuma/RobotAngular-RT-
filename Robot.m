@@ -21,6 +21,7 @@ handles.output = hObject;
 global Eslabon0 Eslabon1 Eslabon2;
 global teta1 teta2 teta3;
 %Eslabon0=[0;0;2;0];
+Eslabon0=[0;0;-7;0];
 Eslabon1=[0;0;11;0];
 Eslabon2=[0;0;7;0];
 teta1=0; teta2=0; teta3=0;
@@ -93,6 +94,9 @@ function pushbutton7_Callback(hObject, eventdata, handles)
 global teta1 teta2 teta3;
 teta1=0; teta2=0; teta3=0;
 set(handles.text27,'string',0);set(handles.text28,'string',0); set(handles.text29,'string',0)
+set(handles.text32,'string',0);set(handles.text33,'string',0); set(handles.text34,'string',0)
+set(handles.edit1,'string',0);set(handles.edit2,'string',0); set(handles.edit3,'string',0)
+
 matrices;
 
 function checkbox1_Callback(hObject, eventdata, handles)
@@ -134,26 +138,66 @@ end
 function pushbutton8_Callback(hObject, eventdata, handles)
 %% C-Inversa
 global teta1 teta2 teta3;
+%teta1=0; teta2=0; teta3=0;
+Px=str2double(get(handles.edit1,'String'));
+Py=str2double(get(handles.edit2,'String'));
+Pz=str2double(get(handles.edit3,'String'));
+l2=11; l3=7;
+com=(90*pi/180);
+r=sqrt(Px^2+ Py^2);
+if (l2+l3)>=r && Pz<=18 && Pz>=-7
+    cosq3=( (((Px)^2) +((Py)^2) +((Pz)^2) -((l2)^2) - ((l3)^2))/ (2*l2*l3));
+    sinq3=(sqrt(1-(cosq3)^2));
+    beta=atan(Pz/r);
+    alfa=atan((l3*sinq3)/(l2+l3*cosq3));
+    if ((Px>=0 && Py>=0)||(Px>=0 && Py<=0))
+        %disp('Cuadrante 1y2');
+        if(Px==0),Px=0.00001;end
+        q1=com*180/pi+((atan(Py/Px))*180/pi);
+        q2=( (com-beta) -(alfa))*180/pi;
+        q3=(atan(sinq3/cosq3))*180/pi;
+    elseif ((Px<0 && Py>0)|| (Px<0 && Py<0))
+        %disp('Cuadrante 3y4');
+        if(Px==0),Px=0.00001;end
+        q1=com*180/pi+((atan(Py/Px))*180/pi)-180;
+        q2=(((com-beta) -(alfa))*180/pi);
+        q3=((atan(sinq3/cosq3))*180/pi);
+    end
+	set(handles.text27,'string',q1); teta1=q1; matrices; pause(1) 
+	set(handles.text28,'string',q2); teta2=q2; matrices; pause(1)
+    set(handles.text29,'string',q3); teta3=q3; matrices;
+else
+	msgbox('Punto inalcanzable');
+    set(handles.text27,'string','0')
+    set(handles.text28,'string','0')
+    set(handles.text29,'string','0')
+end
+
+
+% --- Executes on button press in pushbutton9.
+function pushbutton9_Callback(hObject, eventdata, handles)
+%% C-Inversa-Matrices DH
+global teta1 teta2 teta3;
+
 Px=str2double(get(handles.edit1,'String'));
 Py=str2double(get(handles.edit2,'String'));
 Pz=str2double(get(handles.edit3,'String'));
 l2=11; l3=7;
 r=sqrt(Px^2+ Py^2);
-if (l2+l3)>=r 
-    cosq3=( (((Px)^2) +((Py)^2) +((Pz)^2) -((l2)^2) - ((l3)^2))/ (2*l2*l3));
-    sinq3=(sqrt(1-(cosq3)^2));
-
-    beta=atan(Pz/r);
-    alfa=atan((l3*sinq3)/(l2+l3*cosq3));
-    if(Px==0), q1=((atan(0))*180/pi);else, q1=90+((atan(Py/Px))*180/pi);end
-    q2=( ((90*pi/180)-beta) -(alfa))*180/pi;
-    q3=(atan(sinq3/cosq3))*180/pi;
-	set(handles.text27,'string',q1); teta1=q1; matrices; pause(1) 
-	set(handles.text28,'string',q2); teta2=q2; matrices; pause(1)
-    set(handles.text29,'string',q3); teta3=q3; matrices; 
-else
+if (l2+l3)>=r && Pz<=18 && Pz>=-7
+    q1=(atan(-(Px/Py)))*180/pi;
+    q2=atan(  (Px/(11*sind(q1))) / ( ((-7*cosd(q1)*(Px/(7*sind(q1))))/Py) - ((Px*Pz)/(11*sind(q1)*Py) ) )   )*180/pi;
+    
+    sinq3=  ((cosd(q2)*sind(q1)*Px)/7) - ((cosd(q1)*cosd(q2)*Py)/7) - ((sind(q2)*Pz)/7);
+    %cosq3= ( ((sind(q1)*sind(q2)*Px)/7)  - ((cosd(q1)*sind(q2)*Py)/7) +((cosd(q2)*Pz)/7) -(11/7) ) ;
+    q3=atan(  sinq3  / ( ((sind(q1)*sind(q2)*Px)/7)  - ((cosd(q1)*sind(q2)*Py)/7) +((cosd(q2)*Pz)/7) -(11/7) ) )*180/pi;
+    set(handles.text32,'string',q1); teta1=q1; matrices; pause(1) 
+    set(handles.text33,'string',q2); teta2=q2; matrices; pause(1) 
+	set(handles.text34,'string',q3); teta3=q3; matrices;
+else % 
 	msgbox('Punto inalcanzable');
-    set(handles.text27,'string','inf')
-    set(handles.text28,'string','inf')
-    set(handles.text29,'string','inf')
+    set(handles.text32,'string','0')
+    set(handles.text33,'string','0')
+    set(handles.text34,'string','0')
 end
+

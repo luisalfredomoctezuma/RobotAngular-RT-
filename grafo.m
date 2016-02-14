@@ -4,5 +4,5 @@ ylabel('y')
 zlabel('z')
 title('Robot angular')
 
-axis([-30 30 -30 30 0 30])
+axis([-30 30 -30 30 -7 30])
 grid on
